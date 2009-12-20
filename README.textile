@@ -1,11 +1,23 @@
 h1. rubygems_snapshot
 
-Adds snapshot command to gem. This command allow import/export of gems.
+Adds snapshot command to gem. This command allow import/export gems.
 
 h2. Description
 
 This gem is a plugin for rubygems.
 Based on ["Import/Export Patch":http://rubyforge.org/tracker/?atid=577&group_id=126&func=browse] from ["Peer Allan":http://rubyforge.org/users/pallan].
+
+h2. Install/Usage
+
+@gem install rubygems_snapshot@
+Hosted at ["Gemcutter":http://gemcutter.org/gems/rubygems_snapshot]
+
+After install, you can use:
+
+@gem snapshot export result_file.yml@ to export your gems
+
+@gem snapshot import file_exported.yml@ to import (install) gems.
+*Important*: When importing, don't forget to use sudo if necessary.
 
 h2. License
 
