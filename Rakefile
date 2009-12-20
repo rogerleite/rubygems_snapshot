@@ -6,12 +6,12 @@ require 'rake/gempackagetask'
 require 'spec/rake/spectask'
  
 GEM = "rubygems_snapshot"
-GEM_VERSION = "0.1.0"
+GEM_VERSION = "0.1.2"
 SUMMARY = "Command to import/export gems"
 DESCRIPTION = "Adds snapshot command to gem. This command allow import/export of gems."
 AUTHOR = "Roger Leite"
 EMAIL = "roger.barreto@gmail.com"
-HOMEPAGE = ""
+HOMEPAGE = "http://github.com/rogerleite/rubygems_snapshot"
 
  
 spec = Gem::Specification.new do |s|
@@ -20,8 +20,8 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = SUMMARY
   s.description = DESCRIPTION
-  s.require_paths = ['lib']
-  s.files = FileList['lib/**/*.rb' '[A-Z]*'].to_a
+  s.require_paths = ["lib"]
+  s.files = FileList['lib/commands/snapshot_command.rb', 'lib/rubygems_plugin.rb', 'README*'].to_a
   
   s.author = AUTHOR
   s.email = EMAIL
