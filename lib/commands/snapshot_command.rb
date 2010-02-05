@@ -136,7 +136,7 @@ Describe here what snapshot does.
     if action == "export"
       filename = args[1] || "gems_#{Time.now.strftime("%Y%m%d_%H%M")}.yml"
       filename = filename.downcase
-      filename.concat(".yml") unless filename.end_with?(".yml")
+      filename.concat(".yml") unless end_with?(filename, ".yml")
     else
       filename = args[1]
       raise Gem::CommandLineError, "Snapshot needs an filename argument for import action.\nUsage:\n#{usage}" if filename.nil? or filename.empty?
@@ -144,6 +144,11 @@ Describe here what snapshot does.
     end
 
     [action, filename]
+  end
+
+  def end_with?(target, suffix)
+    suffix = suffix.to_s
+    target[-suffix.length, suffix.length] == suffix
   end
 
 end
