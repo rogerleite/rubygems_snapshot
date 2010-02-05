@@ -17,13 +17,15 @@ After install, you can use:
 @gem snapshot export result_file.yml@ to export your gems
 
 @gem snapshot import file_exported.yml@ to import (install) gems.
+
 *Important*: When importing, don't forget to use sudo if necessary.
+*Important(2)*: When importing, pay attention to errors relative to native build. I don't know how to deal with that. :X
 
 h2. License
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2009 Roger Leite
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
