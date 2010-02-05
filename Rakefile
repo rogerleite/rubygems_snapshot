@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 require 'spec/rake/spectask'
  
 GEM = "rubygems_snapshot"
-GEM_VERSION = "0.1.2"
+GEM_VERSION = "0.1.3"
 SUMMARY = "Command to import/export gems"
 DESCRIPTION = "Adds snapshot command to gem. This command allow import/export of gems."
 AUTHOR = "Roger Leite"
