@@ -1,22 +1,33 @@
+require "rubygems/package"
+
 module GemsSnapshot
 
   class Exporter
 
-    # Retrieve all gem file from installed gems
-    def installed_gems
-      dep = Gem::Dependency.new(/^/i, Gem::Requirement.default) #get all local gems
-      gems = Gem.source_index.search(dep)
-
-      gems_file = []
-      gems.each do |gem|
-        gems_file << "#{gem.installation_path}/cache/#{gem.full_name}.gem"
+    def export(filename = nil, options = {})
+      options = options.merge({:format => :tar})
+      if options[:format] == :tar
+        result = export_to_tar(filename)
+      else
+        raise "implement!"
       end
-      gems_file
+      result
     end
 
-    def pack_file(filename = nil)
+    def installed_gems
+      dep = Gem::Dependency.new(/^/i, Gem::Requirement.default) #get all local gems
+      Gem.source_index.search(dep)
+    end
+
+    def export_to_tar(filename)
       filename = "snapshot.gems" if filename.nil?
-      create_tar_file(filename, installed_gems)
+
+      files = []
+      installed_gems.each do |gem|
+        files << "#{gem.installation_path}/cache/#{gem.full_name}.gem"
+      end
+
+      create_tar_file(filename, files)
       filename
     end
 
