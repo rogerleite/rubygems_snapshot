@@ -3,6 +3,8 @@ require "gems_snapshot/exporter"
 require "ostruct"
 require "fileutils"
 
+include GemsSnapshot
+
 describe GemsSnapshot::Exporter do
 
   FAKE_GEM_PATH = "/tmp/fake_gem_path"
@@ -30,16 +32,9 @@ describe GemsSnapshot::Exporter do
       File.open("#{FAKE_GEM_PATH}/cache/#{gem.full_name}.gem", "w") { |f| f.write gem.full_name }
     end
     Gem.source_index.should_receive(:search).with(anything).once.and_return @mock_gems
+    @exporter.should_receive(:create_tar_file).with("snapshot.gems", ["#{FAKE_GEM_PATH}/cache/rake-0.8.7.gem", "#{FAKE_GEM_PATH}/cache/rspec-1.3.0.gem"])
 
-    result_file = @exporter.pack_file
-
-    File.exist?(result_file).should == true
-    
-    content = Marshal.load(result_file.read)
-    content.first.should == @mock_gems.first.full_name
-    content.last.should == @mock_gems.last.full_name
-
-    File.delete result_file.path
+    @exporter.pack_file
   end
 
 end

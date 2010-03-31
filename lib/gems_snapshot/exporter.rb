@@ -15,13 +15,28 @@ module GemsSnapshot
     end
 
     def pack_file(filename = nil)
-      files_content = []
-      installed_gems.each do |gem_file|
-        files_content << File.read(gem_file)
-      end
       filename = "snapshot.gems" if filename.nil?
-      File.open(filename, "w") { |file| file.write Marshal.dump(files_content) }
-      File.new(filename)
+      create_tar_file(filename, installed_gems)
+      filename
+    end
+
+    def create_tar_file(filename, files)
+      File.open(filename, "w+") do |file|
+        Gem::Package::TarWriter.new(file) do |tar_file|
+
+          files.each do |file_to_include|
+            stat = File.stat(file_to_include)
+            name = "gems/#{File.basename(file_to_include)}"
+
+            tar_file.add_file_simple(name, stat.mode, stat.size) do |tar_io|
+              File.open(file_to_include, "rb") do |file_io|
+                tar_io.write(file_io.read(4096)) until file_io.eof?
+              end
+            end
+          end
+
+        end
+      end
     end
 
   end
