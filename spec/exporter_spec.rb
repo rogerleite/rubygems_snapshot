@@ -16,12 +16,16 @@ describe GemsSnapshot::Exporter do
 
   end
 
-  it "by default, should export all installed gems to 'tar' format" do
+  def create_fake_gem_cache_directory
     #create fake gem cache directory and fake gem files
     FileUtils.mkdir_p "#{FAKE_GEM_PATH}/cache"
     @mock_gems.each do |gem|
       File.open("#{FAKE_GEM_PATH}/cache/#{gem.full_name}.gem", "w") { |f| f.write gem.full_name }
     end
+  end
+
+  it "by default, should export all installed gems to 'tar' format" do
+    create_fake_gem_cache_directory
 
     @exporter.should_receive(:installed_gems).once.and_return(@mock_gems)
     @exporter.should_receive(:create_tar_file).once.with("snapshot.gems", instance_of(Array))
