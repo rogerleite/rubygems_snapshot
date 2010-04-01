@@ -5,15 +5,20 @@ require "fileutils"
 
 include GemsSnapshot
 
+#TODO: find someway to improve these tests
+
 describe GemsSnapshot::Exporter do
 
   FAKE_GEM_PATH = "/tmp/fake_gem_path"
 
   before :each do
     @exporter = subject
-    @mock_gems = [ OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rake-0.8.7"),
-                   OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rspec-1.3.0") ]
+    @mock_gems = [ OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rake-0.8.7", :name => "rake", :version => "0.8.7"),
+                   OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rspec-1.3.0", :name => "rspec", :version => "1.3.0") ]
 
+    Gem.stub!(:sources).and_return do
+      ["http://server1.org", "http://server2.org"]
+    end
   end
 
   def create_fake_gem_cache_directory
@@ -24,7 +29,7 @@ describe GemsSnapshot::Exporter do
     end
   end
 
-  it "by default, should export all installed gems to 'tar' format" do
+  it "should export all installed gems to 'tar' format (by default)" do
     create_fake_gem_cache_directory
 
     @exporter.should_receive(:installed_gems).once.and_return(@mock_gems)
@@ -33,4 +38,26 @@ describe GemsSnapshot::Exporter do
     @exporter.export
   end
 
+  it "should export all installed gems to 'yml' format" do
+    @exporter.should_receive(:installed_gems).once.and_return(@mock_gems)
+
+    result_file = @exporter.export("snapshot.yml", :format => :yml)
+
+    expected_yml = <<-TXT
+--- 
+sources: 
+- http://server1.org
+- http://server2.org
+gems: 
+- name: rake
+  versions: 
+  - 0.8.7
+- name: rspec
+  versions: 
+  - 1.3.0
+    TXT
+
+    File.read(result_file).should eql(expected_yml)
+    File.delete(result_file)
+  end
 end
