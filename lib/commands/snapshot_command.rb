@@ -4,14 +4,22 @@ require 'yaml'
 class Gem::Commands::SnapshotCommand < Gem::Command
 
   def initialize
-    super 'snapshot', 'Export/Import your installed gems'
+    super 'snapshot', 'Export/Import your gems.', :format => "tar"
+
+    add_option('-f', '--format FORMAT', 'Snapshot format. Default is "tar". Can be "yml" too.') do |value, options|
+      options[:format] = value
+    end
+
+  end
+
+  def defaults_str # :nodoc:
+    '--format "tar"'
   end
 
   def arguments # :nodoc:
     args = <<-EOF
-          export    export your installed gems to yml file
-          import    install allgems from yml file
-          filename  yml file used to export/import actions
+          ACTION    'export' or 'import' as action arguments
+          FILENAME  file used to export/import actions
     EOF
     return args.gsub(/^\s+/, '')
   end
@@ -19,14 +27,20 @@ class Gem::Commands::SnapshotCommand < Gem::Command
   def description # :nodoc:
     <<-EOF
 Describe here what snapshot does.
+Updated description at: http://github.com/rogerleite/rubygems_snapshot
     EOF
   end
 
   def usage # :nodoc:
-    "#{program_name} action(export|import) filename"
+    "#{program_name} ACTION(export|import) FILENAME"
   end
 
   def execute
+
+#    require "pp"
+#    pp options
+#    return
+
     action, filename = get_and_check_arguments(options[:args])
 
     if action == "export"
