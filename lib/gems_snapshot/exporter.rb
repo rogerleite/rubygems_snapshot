@@ -1,4 +1,5 @@
 require "rubygems/package"
+require "tmpdir"
 
 module GemsSnapshot
 
@@ -44,23 +45,28 @@ module GemsSnapshot
 
       files = []
       installed_gems.each do |gem|
-        files << "#{gem.installation_path}/cache/#{gem.full_name}.gem"
+        files << {:name => "gems/#{gem.full_name}.gem", :path => "#{gem.installation_path}/cache/#{gem.full_name}.gem"}
       end
+      files << {:name => "gems.yml", :path => export_to_yml("#{Dir.tmpdir}/gems.yml")}
 
       create_tar_file(filename, files)
       filename
     end
 
+    # Create a tar file with Gem::Package::TarWriter from Rubygems.
+    # +filename+ file destination.
+    # +files+ Array of Hash. Each hash have to be +:name+ and +:path+ keys.
     def create_tar_file(filename, files)
       File.open(filename, "w+") do |file|
         Gem::Package::TarWriter.new(file) do |tar_file|
 
-          files.each do |file_to_include|
-            stat = File.stat(file_to_include)
-            name = "gems/#{File.basename(file_to_include)}"
+          files.each do |hash|
+            filepath = hash[:path]
+            filename = hash[:name]
 
-            tar_file.add_file_simple(name, stat.mode, stat.size) do |tar_io|
-              File.open(file_to_include, "rb") do |file_io|
+            stat = File.stat(filepath)
+            tar_file.add_file_simple(filename, stat.mode, stat.size) do |tar_io|
+              File.open(filepath, "rb") do |file_io|
                 tar_io.write(file_io.read(4096)) until file_io.eof?
               end
             end

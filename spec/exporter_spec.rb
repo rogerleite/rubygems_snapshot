@@ -31,9 +31,12 @@ describe GemsSnapshot::Exporter do
 
   it "should export all installed gems to 'tar' format (by default)" do
     create_fake_gem_cache_directory
+    expected_files = [{:name => "gems/rake-0.8.7.gem", :path => "#{FAKE_GEM_PATH}/cache/rake-0.8.7.gem"},
+      {:name => "gems/rspec-1.3.0.gem", :path => "#{FAKE_GEM_PATH}/cache/rspec-1.3.0.gem"},
+      {:name => "gems.yml", :path => "#{Dir.tmpdir}/gems.yml"}]
 
-    @exporter.should_receive(:installed_gems).once.and_return(@mock_gems)
-    @exporter.should_receive(:create_tar_file).once.with("snapshot.gems", instance_of(Array))
+    @exporter.should_receive(:installed_gems).twice.and_return(@mock_gems)
+    @exporter.should_receive(:create_tar_file).once.with("snapshot.gems", expected_files)
 
     @exporter.export
   end
