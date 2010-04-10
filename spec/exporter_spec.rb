@@ -5,48 +5,68 @@ require "fileutils"
 
 include GemsSnapshot
 
-#TODO: find someway to improve these tests
-
 describe GemsSnapshot::Exporter do
 
-  FAKE_GEM_PATH = "/tmp/fake_gem_path"
+  FAKE_GEM_PATH = "#{Dir.tmpdir}/fake_path"
 
   before :each do
-    @exporter = subject
     @mock_gems = [ OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rake-0.8.7", :name => "rake", :version => "0.8.7"),
                    OpenStruct.new(:installation_path => FAKE_GEM_PATH, :full_name => "rspec-1.3.0", :name => "rspec", :version => "1.3.0") ]
+  end
 
-    Gem.stub!(:sources).and_return do
-      ["http://server1.org", "http://server2.org"]
+  it "should support tar format" do
+    mock_exporter = Object.new
+    TarExporter.should_receive(:new).and_return(mock_exporter)
+    mock_exporter.should_receive(:export).with("test.gems").and_return("result_file")
+
+    result_file = subject.export("test.gems", :format => :tar)
+    result_file.should == "result_file"
+  end
+
+  it "should support yml format" do
+    mock_exporter = Object.new
+    YmlExporter.should_receive(:new).and_return(mock_exporter)
+    mock_exporter.should_receive(:export).with("test.yml").and_return("result_file")
+
+    result_file = subject.export("test.yml", :format => :yml)
+    result_file.should == "result_file"
+  end
+
+  describe GemsSnapshot::TarExporter do
+
+    def create_fake_gem_cache_directory
+      #create fake gem cache directory and fake gem files
+      FileUtils.mkdir_p "#{FAKE_GEM_PATH}/cache"
+      @mock_gems.each do |gem|
+        File.open("#{FAKE_GEM_PATH}/cache/#{gem.full_name}.gem", "w") { |f| f.write gem.full_name }
+      end
     end
-  end
 
-  def create_fake_gem_cache_directory
-    #create fake gem cache directory and fake gem files
-    FileUtils.mkdir_p "#{FAKE_GEM_PATH}/cache"
-    @mock_gems.each do |gem|
-      File.open("#{FAKE_GEM_PATH}/cache/#{gem.full_name}.gem", "w") { |f| f.write gem.full_name }
+    it "should export all installed gems to 'tar' format" do
+      create_fake_gem_cache_directory
+      expected_files = [{:name => "gems/rake-0.8.7.gem", :path => "#{FAKE_GEM_PATH}/cache/rake-0.8.7.gem"},
+                        {:name => "gems/rspec-1.3.0.gem", :path => "#{FAKE_GEM_PATH}/cache/rspec-1.3.0.gem"},
+                        {:name => "gems.yml", :path => "#{Dir.tmpdir}/gems.yml"}]
+
+      subject.should_receive(:installed_gems).once.and_return(@mock_gems)
+      subject.should_receive(:export_to_yml).once.and_return("#{Dir.tmpdir}/gems.yml")
+      subject.should_receive(:create_tar_file).once.with("snapshot.gems", expected_files)
+
+      subject.export("snapshot.gems")
     end
+
   end
 
-  it "should export all installed gems to 'tar' format (by default)" do
-    create_fake_gem_cache_directory
-    expected_files = [{:name => "gems/rake-0.8.7.gem", :path => "#{FAKE_GEM_PATH}/cache/rake-0.8.7.gem"},
-      {:name => "gems/rspec-1.3.0.gem", :path => "#{FAKE_GEM_PATH}/cache/rspec-1.3.0.gem"},
-      {:name => "gems.yml", :path => "#{Dir.tmpdir}/gems.yml"}]
+  
+  describe GemsSnapshot::YmlExporter do
 
-    @exporter.should_receive(:installed_gems).twice.and_return(@mock_gems)
-    @exporter.should_receive(:create_tar_file).once.with("snapshot.gems", expected_files)
+    it "should export all installed gems to 'yml' format" do
 
-    @exporter.export
-  end
+      Gem.stub!(:sources).and_return { ["http://server1.org", "http://server2.org"] }
+      subject.should_receive(:installed_gems).once.and_return(@mock_gems)
+      result_file = subject.export("snapshot.yml")
 
-  it "should export all installed gems to 'yml' format" do
-    @exporter.should_receive(:installed_gems).once.and_return(@mock_gems)
-
-    result_file = @exporter.export("snapshot.yml", :format => :yml)
-
-    expected_yml = <<-TXT
+      expected_yml = <<-TXT
 --- 
 sources: 
 - http://server1.org
@@ -58,9 +78,12 @@ gems:
 - name: rspec
   versions: 
   - 1.3.0
-    TXT
+TXT
 
-    File.read(result_file).should eql(expected_yml)
-    File.delete(result_file)
+      File.read(result_file).should eql(expected_yml)
+      File.delete(result_file)
+    end
+
   end
+
 end

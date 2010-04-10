@@ -3,24 +3,40 @@ require "tmpdir"
 
 module GemsSnapshot
 
-  class Exporter
+  module ExporterHelper
 
-    def export(filename = nil, options = {})
-      options = {:format => :tar}.merge(options)
-      if options[:format] == :tar
-        result = export_to_tar(filename)
-      else
-        result = export_to_yml(filename)
-      end
-      result
-    end
-
+    # List all installed gems
     def installed_gems
       dep = Gem::Dependency.new(/^/i, Gem::Requirement.default) #get all local gems
       Gem.source_index.search(dep)
     end
 
-    def export_to_yml(filename)
+  end
+
+  class Exporter
+
+    def export(filename, options = {})
+      options = {:format => :tar}.merge(options)
+      format = options.delete(:format)
+
+      begin
+        exporter = Kernel.const_get("#{format.to_s.capitalize}Exporter").send(:new)
+        result = exporter.export(filename)
+      rescue => ex
+        #TODO: find a way do handle this error in a graceful mode.
+        puts "FATAL: #{ex.message}"
+      end
+
+      result
+    end
+
+  end
+
+  class YmlExporter
+
+    include ExporterHelper
+
+    def export(filename)
       hash_specs = {}
       installed_gems.each do |spec|
         versions = hash_specs[spec.name.to_s] || []
@@ -40,7 +56,13 @@ module GemsSnapshot
       filename
     end
 
-    def export_to_tar(filename)
+  end
+  
+  class TarExporter
+    
+    include ExporterHelper
+
+    def export(filename)
       filename = "snapshot.gems" if filename.nil?
 
       files = []
@@ -51,6 +73,11 @@ module GemsSnapshot
 
       create_tar_file(filename, files)
       filename
+    end
+
+    def export_to_yml(filename)
+      yml_exporter = GemsSnapshot::YmlExporter.new
+      yml_exporter.export("#{Dir.tmpdir}/gems.yml")
     end
 
     # Create a tar file with Gem::Package::TarWriter from Rubygems.
