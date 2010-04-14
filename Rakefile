@@ -1,12 +1,9 @@
-#require 'rubygems'
-#require 'rubygems/specification'
-
 require 'rake'
 require 'rake/gempackagetask'
 require 'spec/rake/spectask'
  
 GEM = "rubygems_snapshot"
-GEM_VERSION = "0.1.3"
+GEM_VERSION = "0.2.0"
 SUMMARY = "Command to import/export gems"
 DESCRIPTION = "Adds snapshot command to gem. This command allow import/export of gems."
 AUTHOR = "Roger Leite"
@@ -21,7 +18,7 @@ spec = Gem::Specification.new do |s|
   s.summary = SUMMARY
   s.description = DESCRIPTION
   s.require_paths = ["lib"]
-  s.files = FileList['lib/commands/snapshot_command.rb', 'lib/rubygems_plugin.rb', 'README*'].to_a
+  s.files = FileList['lib/**/*', 'README*'].to_a
   
   s.author = AUTHOR
   s.email = EMAIL
@@ -31,15 +28,14 @@ spec = Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.5") if s.respond_to? :required_rubygems_version=
 
   s.post_install_message = <<MESSAGE
-
-========================================================================
-
-    Thanks for installing RubygemsSnapshot! You can now run:
-
-    gem snapshot      import/export your gems
-
-========================================================================
-
+===============================================================================
+  Thanks for installing RubygemsSnapshot! You can now run:
+  gem snapshot export example
+  gem snapshot import example
+  ***
+  gem help snapshot for help! ;)
+  OR http://github.com/rogerleite/rubygems_snapshot
+===============================================================================
 MESSAGE
 end
 
