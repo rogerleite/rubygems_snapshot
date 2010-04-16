@@ -36,9 +36,6 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
   end
 
   def execute
-
-    say options.inspect
-
     action, filename = extract_action(options[:args])
     validate_options(options_without_args)
 
