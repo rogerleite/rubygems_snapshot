@@ -18,7 +18,7 @@ module GemsSnapshot
 
   class Exporter
 
-    def export(filename, options = {})
+    def self.export(filename, options = {})
       options = {:format => :tar}.merge(options)
       format = options.delete(:format)
 

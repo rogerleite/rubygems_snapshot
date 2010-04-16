@@ -19,7 +19,7 @@ describe GemsSnapshot::Exporter do
     TarExporter.should_receive(:new).and_return(mock_exporter)
     mock_exporter.should_receive(:export).with("test.gems").and_return("result_file")
 
-    result_file = subject.export("test.gems", :format => :tar)
+    result_file = Exporter.export("test.gems", :format => :tar)
     result_file.should == "result_file"
   end
 
@@ -28,7 +28,7 @@ describe GemsSnapshot::Exporter do
     YmlExporter.should_receive(:new).and_return(mock_exporter)
     mock_exporter.should_receive(:export).with("test.yml").and_return("result_file")
 
-    result_file = subject.export("test.yml", :format => :yml)
+    result_file = Exporter.export("test.yml", :format => :yml)
     result_file.should == "result_file"
   end
 
