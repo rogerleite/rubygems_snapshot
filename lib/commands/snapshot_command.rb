@@ -37,14 +37,13 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
 
   def execute
 
-#    require "pp"
-#    pp options
-#    return
+    say options.inspect
 
-    action, filename = get_and_check_arguments(options[:args])
+    action, filename = extract_action(options[:args])
+    validate_options(options_without_args)
 
     if action == "export"
-      export(action, filename)
+      export(filename)
     else
       import(action, filename)
     end
@@ -105,39 +104,25 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
     end
   end
 
-  def list_installed_gems
-    name = /^/i  #get all local gems
-    dep = Gem::Dependency.new(name, Gem::Requirement.default)
-    specs = Gem.source_index.search(dep)
-  end
-
-  def export(action, filename)
+  def export(filename)
     say "Say CHEESE to snapshot! :P"
-
-    specs = list_installed_gems
-
-    hash_specs = {}
-    specs.each do |spec|
-      versions = hash_specs[spec.name.to_s] || []
-      versions << spec.version.to_s
-      hash_specs[spec.name.to_s] = versions
-    end
-
-    gems = []
-    hash_specs.each do |spec_name, versions|
-      gems << {'name' => spec_name, 'versions' => versions}
-    end
-
-    main_hash = {'gems' => gems, 'sources' => Gem.sources}
-    #say main_hash.to_yaml.to_s  #for debug only :P
-
-    File.open(filename, "w") do |file|
-      file.puts(main_hash.to_yaml)
-    end
+    filename = GemsSnapshot::Exporter.export(filename, options_without_args)
     say "Gems exported to #{filename} successfully."
   end
 
-  def get_and_check_arguments(args)
+  def options_without_args
+    options.reject { |key, value| key == :args }
+  end
+
+  def validate_options(options)
+    format = options[:format]
+    format = format.downcase
+    unless %w(tar yml).include?(format)
+      raise Gem::CommandLineError, "invalid format \"#{format}\" argument.\nUsage:\n#{usage}"
+    end
+  end
+
+  def extract_action(args)
     action = args[0]
     raise Gem::CommandLineError, "Snapshot needs an action argument.\nUsage:\n#{usage}" if action.nil? or action.empty?
 
@@ -146,23 +131,14 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
       raise Gem::CommandLineError, "invalid action \"#{action}\" argument.\nUsage:\n#{usage}"
     end
 
-    filename = nil
-    if action == "export"
-      filename = args[1] || "gems_#{Time.now.strftime("%Y%m%d_%H%M")}.yml"
-      filename = filename.downcase
-      filename.concat(".yml") unless end_with?(filename, ".yml")
-    else
-      filename = args[1]
-      raise Gem::CommandLineError, "Snapshot needs an filename argument for import action.\nUsage:\n#{usage}" if filename.nil? or filename.empty?
+    filename = args[1]
+    raise Gem::CommandLineError, "Snapshot needs an filename argument for #{action} action.\nUsage:\n#{usage}" if filename.nil? or filename.empty?
+    
+    if action == "import"
       raise Gem::Exception, "File not found. :( \nUsage:\n#{usage}" unless File.exist?(filename)
     end
 
     [action, filename]
-  end
-
-  def end_with?(target, suffix)
-    suffix = suffix.to_s
-    target[-suffix.length, suffix.length] == suffix
   end
 
 end
