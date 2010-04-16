@@ -15,21 +15,19 @@ describe GemsSnapshot::Exporter do
   end
 
   it "should support tar format" do
-    mock_exporter = Object.new
-    TarExporter.should_receive(:new).and_return(mock_exporter)
-    mock_exporter.should_receive(:export).with("test.gems").and_return("result_file")
-
+    GemsSnapshot.should_receive(:const_get).with("TarExporter").and_return(GemsSnapshot::TarExporter)
     result_file = Exporter.export("test.gems", :format => :tar)
-    result_file.should == "result_file"
+
+    File.exists?(result_file).should be_true
+    File.delete(result_file)
   end
 
   it "should support yml format" do
-    mock_exporter = Object.new
-    YmlExporter.should_receive(:new).and_return(mock_exporter)
-    mock_exporter.should_receive(:export).with("test.yml").and_return("result_file")
-
+    GemsSnapshot.should_receive(:const_get).with("YmlExporter").and_return(GemsSnapshot::YmlExporter)
     result_file = Exporter.export("test.yml", :format => :yml)
-    result_file.should == "result_file"
+
+    File.exists?(result_file).should be_true
+    File.delete(result_file)
   end
 
   describe GemsSnapshot::TarExporter do

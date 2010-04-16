@@ -13,6 +13,7 @@ module GemsSnapshot
 
   #require all "exporters" from exporter folder
   Dir["#{File.dirname(__FILE__)}/exporter/*_exporter.rb"].each do |file|
+    puts "gems_snapshot/exporter/#{File.basename(file)}"
     require "gems_snapshot/exporter/#{File.basename(file)}"
   end
 
@@ -23,10 +24,10 @@ module GemsSnapshot
       format = options.delete(:format)
 
       begin
-        exporter = Kernel.const_get("#{format.to_s.capitalize}Exporter").send(:new)
+        exporter = GemsSnapshot.const_get("#{format.to_s.capitalize}Exporter").send(:new)
         result = exporter.export(filename)
       rescue => ex
-        raise Gem::Exception, "Ops! An unexpected error occurred: #{ex.message}"
+        raise Gem::Exception, "Ops! An unexpected error occurred: #{ex.message} - #{ex.backtrace}"
       end
 
       result
