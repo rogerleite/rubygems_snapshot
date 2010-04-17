@@ -3,3 +3,4 @@ rubygems_snapshot.gemspec
 doc
 .rvmrc
 tmp
+*.gem
