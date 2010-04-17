@@ -1,6 +1,5 @@
 require 'rake'
 require 'rake/gempackagetask'
-require 'spec/rake/spectask'
  
 GEM = "rubygems_snapshot"
 GEM_VERSION = "0.2.0"
@@ -39,11 +38,6 @@ spec = Gem::Specification.new do |s|
 MESSAGE
 end
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = %w(-fs --color)
-end
-  
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
@@ -58,4 +52,8 @@ task :make_spec do
   File.open("#{GEM}.gemspec", "w") do |file|
     file.puts spec.to_ruby
   end
+end
+
+Dir["tasks/*.rake"].each do |rake_file|
+  load rake_file
 end
