@@ -33,7 +33,8 @@ end
 
 #execute system command, redirecting output
 def execute(command)
-  system("#{command} > #{OUTPUT}")
+  #2>&1 Redirect standard error to standard output
+  system("#{command} > #{OUTPUT} 2>&1")
 end
 
 #read output

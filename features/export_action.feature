@@ -12,7 +12,6 @@ Feature: Export installed gems
     And I should see "gems/rubygems_snapshot-0.2.0.gem"
     And I should see "gems.yml"
 
-  @wip
   Scenario: using export with tar format and no cache gem
     Given I run "rm tmp/fake_gems/cache/rake*"
     When I run "gem snapshot export tmp/test.tar"
