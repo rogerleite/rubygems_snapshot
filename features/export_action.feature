@@ -19,8 +19,7 @@ Feature: Export installed gems
       """
       --- 
       sources: 
-      - http://gems.rubyforge.org/
-      - http://gems.github.com
+      - http://gemcutter.org
       gems: 
       - name: rake
         versions: 
