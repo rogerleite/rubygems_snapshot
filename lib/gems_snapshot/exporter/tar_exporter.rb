@@ -33,6 +33,8 @@ module GemsSnapshot
         Gem::Package::TarWriter.new(file) do |tar_file|
 
           files.each do |hash|
+            next unless File.exists?(hash[:path])
+
             filepath = hash[:path]
             filename = hash[:name]
 
