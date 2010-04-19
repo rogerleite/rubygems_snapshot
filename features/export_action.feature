@@ -1,0 +1,34 @@
+Feature: Export installed gems
+  In order to export gems
+  A user
+  Wants a command line interface
+  So that he or she can export gems.
+
+  Scenario: using export with default format
+    When I run "gem snapshot export tmp/test.tar"
+    Then I should see "Gems exported to tmp/test.tar successfully."
+    And I run "tar -tf tmp/test.tar"
+    And I should see "gems/rake-0.8.7.gem"
+    And I should see "gems/rubygems_snapshot-0.2.0.gem"
+    And I should see "gems.yml"
+
+  @wip
+  Scenario: using export with yml format argument
+    When I run "gem snapshot export tmp/test.yml -f yml"
+    Then I should see "Gems exported to tmp/test.yml successfully."
+    And I should see file "tmp/test.yml" content like
+      """
+      --- 
+      sources: 
+      - http://gems.rubyforge.org/
+      - http://gems.github.com
+      gems: 
+      - name: rake
+        versions: 
+        - 0.8.7
+      - name: rubygems_snapshot
+        versions: 
+        - 0.2.0
+
+      """
+

@@ -19,7 +19,7 @@ def create_fake_environment
   system "gem build rubygems_snapshot.gemspec"
   system "gem install rubygems_snapshot*.gem"
 
-  puts "===\n\n"
+  puts "=== Fake environment done! \n\n"
 end
 
 #execute system command, redirecting output
