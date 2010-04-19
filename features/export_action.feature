@@ -12,7 +12,6 @@ Feature: Export installed gems
     And I should see "gems/rubygems_snapshot-0.2.0.gem"
     And I should see "gems.yml"
 
-  @wip
   Scenario: using export with yml format argument
     When I run "gem snapshot export tmp/test.yml -f yml"
     Then I should see "Gems exported to tmp/test.yml successfully."

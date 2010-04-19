@@ -8,6 +8,8 @@ Before do
 end
 
 def create_fake_environment
+  puts "=== Building fake environment ... \n"
+
   ENV["GEM_HOME"]="/home/roger/ruby/rubygems_snapshot/tmp/fake_gems"
   ENV["GEM_PATH"]="/home/roger/ruby/rubygems_snapshot/tmp/fake_gems"
 

@@ -38,7 +38,7 @@ describe Gem::Commands::SnapshotCommand do
 
     it "should call Exporter API" do
       cmd = create_command(:args => ["export", "./spec/export_sample"])
-      Exporter.should_receive(:export).with("./spec/export_sample", :format => "tar").and_return("./spec/export_sample")
+      GemsSnapshot::Exporter.should_receive(:export).with("./spec/export_sample", :format => "tar").and_return("./spec/export_sample")
 
       cmd.execute
     end
