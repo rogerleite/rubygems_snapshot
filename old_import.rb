@@ -1,3 +1,6 @@
+require 'rubygems/command'
+require 'yaml'
+
 class Gem::Commands::SnapshotCommand < Gem::Command
 
   def initialize
@@ -39,14 +42,63 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
     if action == "export"
       export(filename)
     else
-      import(filename)
+      import(action, filename)
     end
   end
 
   private
 
-  def import(filename)
-    GemsSnapshot::Importer.import(filename, options_without_args)
+  def import(action, filename)
+    #TODO: check if is a valid yml file
+
+    require 'rubygems/dependency_installer'
+
+    main_hash = nil
+    File.open(filename, "r") do |file|
+      main_hash = YAML.load(file)
+    end
+    
+    main_hash['sources'].each do |source|
+      Gem.sources << source unless Gem.sources.include?(source)
+    end
+
+    options = Gem::DependencyInstaller::DEFAULT_OPTIONS.merge({
+      :generate_rdoc     => true,
+      :generate_ri       => true,
+      :format_executable => false,
+      :test              => false,
+      :version           => Gem::Requirement.default,
+      #aditional default parameters
+      :ignore_dependencies => true,
+      :verbose => true
+    })
+
+    main_hash['gems'].each do |hash_gem|
+      gem_name = hash_gem['name']
+      hash_gem['versions'].each do |version|
+
+        say "Going to install #{gem_name} -v#{version} ... wish me luck!"
+        begin
+          gem_install(options, gem_name, version)
+
+        rescue Gem::InstallError => e
+          alert_error("Error installing #{gem_name}:\n\t#{e.message}")
+        rescue Gem::GemNotFoundException => e
+          alert_error(e.message)
+        end
+
+      end
+    end
+
+  end
+
+  def gem_install(options, gem_name, version)
+    inst = Gem::DependencyInstaller.new(options)
+    inst.install(gem_name, version)
+
+    inst.installed_gems.each do |spec|
+      say "Successfully installed #{spec.full_name}"
+    end
   end
 
   def export(filename)
@@ -54,8 +106,6 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
     filename = GemsSnapshot::Exporter.export(filename, options_without_args)
     say "Gems exported to #{filename} successfully."
   end
-
-  private
 
   def options_without_args
     options.reject { |key, value| key == :args }

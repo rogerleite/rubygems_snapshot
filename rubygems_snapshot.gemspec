@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.5") if s.respond_to? :required_rubygems_version=
   s.authors = ["Roger Leite"]
-  s.date = %q{2010-04-19}
+  s.date = %q{2010-04-20}
   s.description = %q{Adds snapshot command to gem. This command allow import/export of gems.}
   s.email = %q{roger.barreto@gmail.com}
-  s.files = ["lib/gems_snapshot", "lib/gems_snapshot/exporter", "lib/gems_snapshot/exporter/yml_exporter.rb", "lib/gems_snapshot/exporter/tar_exporter.rb", "lib/gems_snapshot/exporter.rb", "lib/rubygems_plugin.rb", "lib/commands", "lib/commands/snapshot_command.rb", "README.textile"]
+  s.files = ["lib/commands", "lib/commands/snapshot_command.rb", "lib/gems_snapshot", "lib/gems_snapshot/importer", "lib/gems_snapshot/importer/yml_importer.rb", "lib/gems_snapshot/exporter", "lib/gems_snapshot/exporter/tar_exporter.rb", "lib/gems_snapshot/exporter/yml_exporter.rb", "lib/gems_snapshot/exporter.rb", "lib/gems_snapshot/importer.rb", "lib/rubygems_plugin.rb", "README.textile"]
   s.homepage = %q{http://github.com/rogerleite/rubygems_snapshot}
   s.post_install_message = %q{===============================================================================
   Thanks for installing RubygemsSnapshot! You can now run:

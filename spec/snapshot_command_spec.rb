@@ -49,46 +49,22 @@ describe Gem::Commands::SnapshotCommand do
     
     it "should validate if filename argument is not empty" do
       cmd = create_command(:args => ["import"])
-      
       lambda { cmd.execute }.should raise_error(Gem::CommandLineError)
     end
 
     it "should validate if filename argument exist" do
       cmd = create_command(:args => ["import", "./spec/invalid_file.yml"])
-      
       lambda { cmd.execute }.should raise_error(Gem::Exception)
     end
     
-    it "should works" do
-      sample_yml = <<-TXT
---- 
-sources: 
-- http://server1.org
-- http://server2.org
-gems: 
-- name: example1
-  versions: 
-  - 1.0.0
-- name: example2
-  versions: 
-  - 1.1.5
-      TXT
+    it "should call Importer API" do
+      cmd = create_command(:args => ["import", "./tmp/import_sample"])
+      File.open("./tmp/import_sample", "w") { |file| file.puts "sample!" }
 
-      File.open(File.expand_path("./spec/import_sample.yml"), "w") do |f|
-        f.puts(sample_yml)
-      end
-
-      cmd = create_command(:args => ["import", "./spec/import_sample.yml"])
-      cmd.should_receive(:gem_install).with(an_instance_of(Hash), "example1", "1.0.0")
-      cmd.should_receive(:gem_install).with(an_instance_of(Hash), "example2", "1.1.5")
-      
+      GemsSnapshot::Importer.should_receive(:import).with("./tmp/import_sample", :format => "tar")
       cmd.execute
-      Gem.sources.include?("http://server1.org").should eql(true)
-      Gem.sources.include?("http://server2.org").should eql(true)
-      
-      File.delete(File.expand_path("./spec/import_sample.yml"))
     end
-    
+
   end
 
 end
