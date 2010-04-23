@@ -8,7 +8,7 @@ Before do
 end
 
 def create_fake_environment
-  puts "=== Building fake environment ... \n"
+  puts "\n=== Building fake environment ... \n"
 
   root_dir = File.expand_path( File.dirname(__FILE__) + "/.." )
   puts "Project Root Directory: #{root_dir}"
@@ -16,19 +16,20 @@ def create_fake_environment
   ENV["GEM_HOME"]="#{root_dir}/tmp/fake_gems"
   ENV["GEM_PATH"]="#{root_dir}/tmp/fake_gems"
 
-  FileUtils.rm_rf "tmp/fake_gems"
+  FileUtils.rm_rf "tmp"
   FileUtils.mkdir_p "tmp/fake_gems"
 
-  Gem.sources = ["http://gems.rubyforge.org/"]
+  Gem.sources = ["http://gems.rubyforge.org/"] #force only this source for tests
+
+  system "gem install features/resources/rake-0.8.7.gem --no-rdoc --no-ri > /dev/null"
+
+  system "gem build rubygems_snapshot.gemspec > /dev/null"
+  system "gem install rubygems_snapshot*.gem --no-rdoc --no-ri > /dev/null"
+
   system "gem env"
   system "gem list"
   
-  system "gem install features/resources/rake-0.8.7.gem --no-rdoc --no-ri"
-
-  system "gem build rubygems_snapshot.gemspec"
-  system "gem install rubygems_snapshot*.gem --no-rdoc --no-ri"
-
-  puts "=== Fake environment done! \n\n"
+  puts "\n=== Fake environment done! \n\n"
 end
 
 #execute system command, redirecting output
