@@ -28,7 +28,7 @@ Feature: Export installed gems
       """
       --- 
       sources: 
-      - http://gemcutter.org
+      - http://rubygems.org/
       gems: 
       - name: rake
         versions: 

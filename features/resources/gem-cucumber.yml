@@ -1,0 +1,5 @@
+:install: --no-rdoc --no-ri
+:update: --no-rdoc --no-ri
+:update_sources: false
+:sources:
+- http://rubygems.org/

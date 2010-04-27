@@ -19,12 +19,10 @@ def create_fake_environment
   FileUtils.rm_rf "tmp"
   FileUtils.mkdir_p "tmp/fake_gems"
 
-  Gem.sources = ["http://gems.rubyforge.org/"] #force only this source for tests
-
-  system "gem install features/resources/rake-0.8.7.gem --no-rdoc --no-ri > /dev/null"
+  system "gem install features/resources/rake-0.8.7.gem > /dev/null"
 
   system "gem build rubygems_snapshot.gemspec > /dev/null"
-  system "gem install rubygems_snapshot*.gem --no-rdoc --no-ri > /dev/null"
+  system "gem install rubygems_snapshot*.gem > /dev/null"
 
   system "gem env"
   system "gem list"
@@ -46,9 +44,10 @@ end
 #Change some commands if necessary
 def gsub_command(system_command)
   command = system_command
-#  if system_command.include?("gem ")
-#    command.gsub!("gem ", "ruby -I ./lib/ `which gem` ")
-#  end
+  if system_command.include?("gem ")
+    #command.gsub!("gem ", "ruby -I ./lib/ `which gem` ")
+    command << " --config-file=features/resources/gem-cucumber.yml"
+  end
   command
 end
 
