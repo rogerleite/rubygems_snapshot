@@ -19,10 +19,10 @@ def create_fake_environment
   FileUtils.rm_rf "tmp"
   FileUtils.mkdir_p "tmp/fake_gems"
 
-  system "gem install features/resources/rake-0.8.7.gem > /dev/null"
+  system "gem install features/resources/rake-0.8.7.gem --no-ri --no-rdoc > /dev/null"
 
-  system "gem build rubygems_snapshot.gemspec > /dev/null"
-  system "gem install rubygems_snapshot*.gem > /dev/null"
+  system "gem build rubygems_snapshot.gemspec"
+  system "gem install rubygems_snapshot*.gem --no-ri --no-rdoc > /dev/null"
 
   system "gem env"
   system "gem list"

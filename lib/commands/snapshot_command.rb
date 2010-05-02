@@ -47,6 +47,7 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
 
   def import(filename)
     GemsSnapshot::Importer.import(filename, options_without_args)
+    say "Gems imported successfully."
   end
 
   def export(filename)
@@ -54,8 +55,6 @@ Updated description at: http://github.com/rogerleite/rubygems_snapshot
     filename = GemsSnapshot::Exporter.export(filename, options_without_args)
     say "Gems exported to #{filename} successfully."
   end
-
-  private
 
   def options_without_args
     options.reject { |key, value| key == :args }

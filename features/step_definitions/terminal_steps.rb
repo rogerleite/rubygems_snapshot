@@ -16,3 +16,7 @@ Then /^I should see file "([^\"]*)" content like$/ do |filename, content|
   File.read(filename).should == content
 end
 
+Given /^I have a file "([^\"]*)" with content$/ do |filename, content|
+  File.open(filename, "w+") { |file| file.puts content }
+end
+
