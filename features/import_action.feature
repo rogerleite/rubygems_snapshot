@@ -4,7 +4,6 @@ Feature: Import gems
   Wants a command line interface
   So that he or she can import gems.
 
-  @wip
   Scenario: using yml import
     Given I have a file "tmp/import_test.yml" with content
       """
