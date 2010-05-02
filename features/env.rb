@@ -1,6 +1,7 @@
 require "fileutils"
 
 OUTPUT = 'tmp/output.log'
+SHOW_OUTPUT = false
 
 Before do
   FileUtils.rm_rf OUTPUT
@@ -34,6 +35,7 @@ end
 def execute(command)
   #2>&1 Redirect standard error to standard output
   system("#{command} > #{OUTPUT} 2>&1")
+  puts File.read(OUTPUT) if SHOW_OUTPUT
 end
 
 #read output
