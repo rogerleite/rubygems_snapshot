@@ -4,7 +4,7 @@ OUTPUT = 'tmp/output.log'
 SHOW_OUTPUT = false
 
 Before do
-  FileUtils.rm_rf OUTPUT
+  FileUtils.rm_f OUTPUT
   FileUtils.mkdir_p File.dirname(OUTPUT)
 end
 
@@ -23,8 +23,7 @@ end
 #Change some commands if necessary
 def gsub_command(system_command)
   command = system_command
-  if system_command.include?("gem ")
-    #command.gsub!("gem ", "ruby -I ./lib/ `which gem` ")
+  if system_command =~ /^gem/
     command << " --config-file=features/resources/gem-cucumber.yml"
   end
   command
