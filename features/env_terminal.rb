@@ -1,7 +1,8 @@
 require "fileutils"
 
 OUTPUT = 'tmp/output.log'
-SHOW_OUTPUT = true
+SHOW_OUTPUT = !!ENV["show_output"]
+#rake cucumber show_output=true  #to show output
 
 Before do
   FileUtils.rm_f OUTPUT
