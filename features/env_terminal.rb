@@ -1,7 +1,7 @@
 require "fileutils"
 
 OUTPUT = 'tmp/output.log'
-SHOW_OUTPUT = false
+SHOW_OUTPUT = true
 
 Before do
   FileUtils.rm_f OUTPUT

@@ -33,8 +33,8 @@ Feature: Import gems
         versions: 
         - 1.4.2
       """
-    And I run "gem install features/resources/json-1.4.2.gem --no-ri --no-rdoc"
-    And I run "gem install features/resources/json-1.4.1.gem --no-ri --no-rdoc"
+    And I run "gem install tmp/gems/json-1.4.2.gem --no-ri --no-rdoc"
+    And I run "gem install tmp/gems/json-1.4.1.gem --no-ri --no-rdoc"
     When I run "gem snapshot import tmp/import_test.yml -f yml"
     Then I should see "json-1.4.2 already available!"
 
@@ -50,7 +50,7 @@ Feature: Import gems
         - 1.4.2
       """
     And I run "gem uninstall json -a -x -I"
-    And I run "cp features/resources/json-1.4.2.gem tmp/fake_gems/cache"
+    And I run "cp tmp/gems/json-1.4.2.gem tmp/fake_gems/cache"
     When I run "gem snapshot import tmp/import_test.yml -f yml"
     Then I should see "json-1.4.2.gem"
     And I should see "Gems imported successfully."
