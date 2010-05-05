@@ -1,7 +1,3 @@
-require 'rubygems/command'
-require 'rubygems/dependency_installer'
-require 'yaml' unless defined?(YAML)
-
 module GemsSnapshot
 
   #require all "importers" from importer folder

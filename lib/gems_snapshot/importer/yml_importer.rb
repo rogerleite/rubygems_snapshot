@@ -1,3 +1,5 @@
+require 'rubygems/dependency_installer'
+require 'yaml'
 
 module GemsSnapshot
 

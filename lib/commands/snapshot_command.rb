@@ -1,3 +1,5 @@
+require 'rubygems/command'
+
 class Gem::Commands::SnapshotCommand < Gem::Command
 
   def initialize
