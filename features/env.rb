@@ -18,6 +18,7 @@ def create_fake_environment
   cd tmp/gems
   rename 's/\.sample$//' *.sample
   cd ../..
+  cp features/resources/test.tar tmp/
 CMD
 
   system "gem install tmp/gems/rake-0.8.7.gem --no-ri --no-rdoc > /dev/null"
