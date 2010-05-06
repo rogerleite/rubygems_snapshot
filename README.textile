@@ -1,25 +1,65 @@
 h1. rubygems_snapshot
 
-Adds snapshot command to gem. This command allow import/export gems.
+Adds snapshot command to gem. This command allow *import/export* gems.
+Snapshot, copy your current gems in a single file, providing a fast and secure way to import your gems anywhere.
 
 h2. Description
 
 This gem is a plugin for rubygems.
-Based on ["Import/Export Patch":http://rubyforge.org/tracker/?atid=577&group_id=126&func=browse] from ["Peer Allan":http://rubyforge.org/users/pallan].
+Version 1 was based on ["Import/Export Patch":http://rubyforge.org/tracker/?atid=577&group_id=126&func=browse] from ["Peer Allan":http://rubyforge.org/users/pallan].
+
+Gem tested with:
+- ruby-1.8.6-p399 [ i386 ]
+- ruby-1.8.7-p249 [ i386 ]
+
+*gem --version* 1.3.6
 
 h2. Install/Usage
 
 @gem install rubygems_snapshot@
-Hosted at ["Gemcutter":http://gemcutter.org/gems/rubygems_snapshot]
 
 After install, you can use:
 
-@gem snapshot export result_file.yml@ to export your gems
+@gem snapshot export gems.tar@ to export your gems
 
-@gem snapshot import file_exported.yml@ to import (install) gems.
+@gem snapshot import gems.tar@ to import (install) gems.
 
 *Important*: When importing, don't forget to use sudo if necessary.
 *Important(2)*: When importing, pay attention to errors relative to native build. I don't know how to deal with that. :X
+*Hosted* at ["Gemcutter":http://gemcutter.org/gems/rubygems_snapshot]
+
+h3. Others formats
+
+Nowadays, it supports two formats:
+- tar (default)
+- yml
+
+You can chose the format, using -f parameter. For example:
+
+@gem snapshot export gems.yml -f yml@
+@gem snapshot import gems.yml -f yml@
+
+For aditional help, execute:
+@gem help snapshot@
+
+h2. How it Works?
+
+It's very simple.
+*When exporting*, get all gems (like "gem list"), puts in a yml file.
+If gem file exists at cache folder from rubygems, copy to tar file too. (tar format)
+
+*When importing*, copy all gems to rubygems cache folder.
+Read the yml file, install the gem file from cache folder or do a simple "gem install" if gem file does not exists.
+
+h2. For Developers
+
+After git clone, you'll need the following gems:
+- rake
+- rspec
+- cucumber
+
+Use "rake -T" to see the available tasks.
+I highly recomend using ["RVM":http://rvm.beginrescueend.com/] during development.
 
 h2. License
 
