@@ -59,7 +59,7 @@ Feature: Import gems
 
   @wip
   Scenario: using tar import
-    When I run "gem snapshot import tmp/test.tar"
+    When I run "gem snapshot import tmp/test_import.tar"
     Then I should see "awesome_print-0.1.4.gem"
     And I should see "Gems imported successfully."
     And I run "gem list"
