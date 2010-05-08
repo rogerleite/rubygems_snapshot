@@ -55,11 +55,14 @@ h3. Using as API
 require "rubygems"
 GemsSnapshot::Exporter.export("example.tar", :format => :tar)
 </pre>
+
 --
+
 <pre>
 require "rubygems"
 GemsSnapshot::Importer.import("example.tar", :format => :tar)
 </pre>
+
 
 h3. Use the sources Luke!
 
