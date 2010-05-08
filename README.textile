@@ -38,7 +38,7 @@ You can chose the format, using -f parameter. For example:
 For aditional help, execute:
 @gem help snapshot@
 
-h2. How it Works?
+h3. How it Works?
 
 It's very simple.
 *When exporting*, get all gems (like "gem list"), puts in a yml file.
@@ -47,15 +47,30 @@ If gem file exists at cache folder from rubygems, copy to tar file too. (tar for
 *When importing*, copy all gems to rubygems cache folder.
 Read the yml file, install the gem file from cache folder or do a simple "gem install" if gem file does not exists.
 
-h2. Help for Developers
+h2. For Developers
 
-After git clone, you'll need the following gems:
+h3. Using as API
+
+<pre>
+require "rubygems"
+GemsSnapshot::Exporter.export("example.tar", :format => :tar)
+</pre>
+--
+<pre>
+require "rubygems"
+GemsSnapshot::Importer.import("example.tar", :format => :tar)
+</pre>
+
+h3. Use the sources Luke!
+
+If you want help to improve Snapshot, after git clone, you'll need the following gems:
 * rake
 * rspec
 * cucumber
 
 Use "rake -T" to see the available tasks.
 I highly recomend using ["RVM":http://rvm.beginrescueend.com/] during development.
+Anything, questions, suggestions etc., send me message or leave a issue.
 
 h2. License
 
