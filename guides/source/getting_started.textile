@@ -1,0 +1,60 @@
+h2. Getting Started
+
+*Export* and *Import* your gems.
+
+Snapshot, copy your current gems in a single file, providing a fast and secure way to import your gems anywhere.
+
+
+endprologue.
+
+h3. How it Works?
+
+It’s very simple.
+
+When *exporting*, get all gems (like “gem list”) and puts in a yml file.
+If gem file exists at cache folder from rubygems, copy to tar file too. (tar format)
+
+When *importing*, copy all gems to rubygems cache folder.
+Read the yml file, install the gem file from cache folder or do a simple “gem install” if gem file does not exists.
+
+
+h3. Install
+
+<shell>
+gem install rubygems_snapshot
+</shell>
+
+h3. Usage
+
+To export your gems:
+<shell>
+gem snapshot export gems.tar
+</shell>
+
+To import (and install) gems:
+<shell>
+gem snapshot import gems.tar
+</shell>
+
+IMPORTANT: When importing, don’t forget to use *sudo if necessary*. Pay attention to errors relative to *native build*. I don’t know how to deal with that yet! :X
+
+h4. Other Formats
+
+Nowadays, it supports two formats:
+* tar (default)
+* yml
+
+You can chose the format, using -f parameter. For example:
+
+<shell>
+gem snapshot export gems.yml -f yml
+gem snapshot import gems.yml -f yml
+</shell>
+
+h3. For Developers
+
+See For Developers section.
+
+NOTE: You can find help ! See "Credits and Contact":credits.html.
+
+INFO: Version 1 was based on "Import / Export patch":http://rubyforge.org/tracker/?atid=577&group_id=126&func=browse from "Peter Allan":http://rubyforge.org/users/pallan

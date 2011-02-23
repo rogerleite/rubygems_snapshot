@@ -1,0 +1,21 @@
+h2. Using as API
+
+For developers ! You can use Snapshot as API.
+
+endprologue.
+
+h3. Snippets
+
+<ruby>
+require "rubygems"
+
+#exports all gems to example.tar
+GemsSnapshot::Exporter.export("example.tar", :format => :tar) 
+
+#import gems from example.tar
+GemsSnapshot::Importer.import("example.tar", :format => :tar) 
+
+</ruby>
+
+NOTE: You can find help ! See "Credits and Contact":credits.html.
+

@@ -1,0 +1,21 @@
+title: 'Snapshot: A Rubygems plugin'
+description: Export and Import your gems.
+
+authors:
+  Development Team:
+    - name: Roger Leite
+      nick: rogerleite
+      description: Writes this gem.
+    - name: Rodrigo Panachi
+      nick: rpanachi
+      description: Help writing this gem.
+
+index:
+  Start Here:
+    - title: Getting Started
+      url: getting_started
+      text: Everything you need to know to install Rubygems Snapshot and create your first backup.
+  API:
+    - title: Using as API
+      url: api
+      text: For developers ! You can use Snapshot as API.

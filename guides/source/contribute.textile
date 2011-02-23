@@ -1,0 +1,20 @@
+h2. Contribute
+
+Use the sources Luke !
+
+endprologue.
+
+h3. Development Dependencies
+
+Here are development dependencies to help to improve Snapshot.
+* rake
+* rspec
+* cucumber
+
+Use "rake -T" to see the available tasks.
+
+I highly recomend using "RVM":http://rvm.beginrescueend.com/ during development.
+
+Anything, questions, suggestions etc., send me message or leave an "issue":https://github.com/rogerleite/rubygems_snapshot/issues.
+
+NOTE: You can find help ! See "Credits and Contact":credits.html.
