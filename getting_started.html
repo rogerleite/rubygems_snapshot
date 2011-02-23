@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Snapshot: A Rubygems plugin</title>
+<title>Snapshot: A Rubygems plugin: Getting Started</title>
 
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
@@ -20,7 +20,6 @@
   <div id="topNav">
     <div class="wrapper">
       
-
     </div>
   </div>
   <div id="header">
@@ -53,34 +52,74 @@
 
   <div id="feature">
     <div class="wrapper">
-      <h2>Snapshot: A Rubygems plugin</h2>
-      <p>Export and Import your gems.</p>
-      
+      <h2>Getting Started</h2>
+<p><strong>Export</strong> and <strong>Import</strong> your gems.</p>
+<p>Snapshot, copy your current gems in a single file, providing a fast and secure way to import your gems anywhere.</p>
+            <div id="subCol">
+        <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+        <ol class="chapters">
+<li><a href="#how-it-works">How it Works?</a></li><li><a href="#install">Install</a></li><li><a href="#usage">Usage</a><ul><li><a href="#other-formats">Other Formats</a></li></ul></li><li><a href="#for-developers">For Developers</a></li></ol></div>
     </div>
   </div>
 
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-          <h3>Start Here</h3>
+        <h3 id="how-it-works">1 How it Works?</h3>
+<p>It’s very simple.</p>
+<p>When <strong>exporting</strong>, get all gems (like “gem list”) and puts in a yml file.
+If gem file exists at cache folder from rubygems, copy to tar file too. (tar format)</p>
+<p>When <strong>importing</strong>, copy all gems to rubygems cache folder.
+Read the yml file, install the gem file from cache folder or do a simple “gem install” if gem file does not exists.</p>
+<h3 id="install">2 Install</h3>
+<notextile>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+gem install rubygems_snapshot
+</pre>
+</div>
+</notextile>
 
-  <dl>
-      <dt><a href="getting_started.html">Getting Started</a></dt>
-      <dd>
-        <p>Everything you need to know to install Rubygems Snapshot and create your first backup.</p>
-      </dd>
-  </dl>
-  <h3>API</h3>
+<h3 id="usage">3 Usage</h3>
+<p>To export your gems:</p>
+<notextile>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+gem snapshot export gems.tar
+</pre>
+</div>
+</notextile>
 
-  <dl>
-      <dt><a href="api.html">Using as API</a></dt>
-      <dd>
-        <p>For developers ! You can use Snapshot as API.</p>
-      </dd>
-  </dl>
+<p>To import (and install) gems:</p>
+<notextile>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+gem snapshot import gems.tar
+</pre>
+</div>
+</notextile>
 
+<div class='warning'><p>When importing, don’t forget to use <strong>sudo if necessary</strong>. Pay attention to errors relative to <strong>native build</strong>. I don’t know how to deal with that yet! :X</p></div>
+<h4 id="other-formats">3.1 Other Formats</h4>
+<p>Nowadays, it supports two formats:</p>
+<ul>
+	<li>tar (default)</li>
+	<li>yml</li>
+</ul>
+<p>You can chose the format, using -f parameter. For example:</p>
+<notextile>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+gem snapshot export gems.yml -f yml
+gem snapshot import gems.yml -f yml
+</pre>
+</div>
+</notextile>
 
-
+<h3 id="for-developers">4 For Developers</h3>
+<p>See For Developers section.</p>
+<div class='note'><p>You can find help ! See <a href="credits.html">Credits and Contact</a>.</p></div>
+<div class='info'><p>Version 1 was based on <a href="http://rubyforge.org/tracker/?atid=577&amp;group_id=126&amp;func=browse">Import / Export patch</a> from <a href="http://rubyforge.org/users/pallan">Peter Allan</a></p></div>
       </div>
     </div>
   </div>
@@ -89,13 +128,6 @@
   <div id="footer">
     <div class="wrapper">
       
-  <p>This work is licensed under a
-    <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Share Alike 3.0</a>
-    license.
-  </p>
-  <p>
-  </p>
-
     </div>
   </div>
 
