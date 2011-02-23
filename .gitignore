@@ -3,3 +3,4 @@ doc
 .rvmrc
 tmp
 *.gem
+guides/output
