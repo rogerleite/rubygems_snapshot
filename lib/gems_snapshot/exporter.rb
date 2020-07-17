@@ -5,8 +5,7 @@ module GemsSnapshot
 
     # List all installed gems
     def installed_gems
-      dep = Gem::Dependency.new(/^/i, Gem::Requirement.default) #get all local gems
-      Gem.source_index.search(dep)
+      Gem::Specification.each.to_a
     end
 
   end
