@@ -1,8 +1,8 @@
 require 'rake'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
  
 GEM = "rubygems_snapshot"
-GEM_VERSION = "0.2.0"
+GEM_VERSION = "0.3.0"
 SUMMARY = "Command to import/export gems"
 DESCRIPTION = "Adds snapshot command to gem. This command allow import/export of gems."
 AUTHOR = "Roger Leite"
@@ -23,7 +23,6 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
 
-  s.rubyforge_project = GEM # GitHub bug, gem isn't being build when this miss
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.5") if s.respond_to? :required_rubygems_version=
 
   s.post_install_message = <<MESSAGE
@@ -38,7 +37,7 @@ spec = Gem::Specification.new do |s|
 MESSAGE
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
  
